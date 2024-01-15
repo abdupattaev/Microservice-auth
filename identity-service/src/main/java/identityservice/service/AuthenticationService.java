@@ -8,6 +8,7 @@ import identityservice.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,6 +61,11 @@ public class AuthenticationService {
         var user = userService
                 .userDetailsService()
                 .loadUserByUsername(request.getUsername());
+
+        if (user == null) {
+            // If the user is not found, throw UsernameNotFoundException
+            throw new UsernameNotFoundException("User not found with username: " + request.getUsername());
+        }
 
         var jwtToken = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(request.getUsername(), jwtToken);

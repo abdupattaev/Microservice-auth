@@ -5,7 +5,13 @@ spring:
         - id: identity-service
           uri: lb://IDENTITY-SERVICE
           predicates:
-            - Path=/**
+            - Path=/auth/**
+        - id: new-service
+          uri: lb://NEW-SERVICE
+          predicates:
+            - Path=/main/**
+          filters:
+            - AuthenticationFilter
 
 
   application:
