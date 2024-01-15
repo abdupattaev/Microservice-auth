@@ -29,9 +29,9 @@ public class SampleController {
         return "Hello, admin!";
     }
 
-    @GetMapping("/get-admin")
+    @GetMapping("/set-admin")
     @Operation(summary = "Get the ADMIN role (for demonstration)")
     public void getAdmin() {
-        service.getAdmin();
+        service.setAdmin();
     }
 }

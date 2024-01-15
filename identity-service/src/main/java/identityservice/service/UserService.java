@@ -81,10 +81,9 @@ public class UserService {
      * <p>
      * Deprecated for demonstration purposes
      */
-    @Deprecated
-    public void getAdmin() {
+    public void setAdmin() {
         var user = getCurrentUser();
-        user.setRole(Role.ROLE_ADMIN);
+        user.setRole(Role.ADMIN);
         save(user);
     }
 }
