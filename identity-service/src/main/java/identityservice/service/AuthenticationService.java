@@ -6,6 +6,7 @@ import identityservice.domain.dto.SignUpRequest;
 import identityservice.domain.model.Role;
 import identityservice.domain.model.User;
 import lombok.RequiredArgsConstructor;
+import identityservice.kafka.UserEventProducer;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final UserEventProducer userEventProducer;
 
     /**
      * User registration
@@ -35,6 +37,7 @@ public class AuthenticationService {
                 .build();
 
         userService.create(user);
+        userEventProducer.sendUserCreatedEvent(user);
 
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);
